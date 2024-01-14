@@ -1,4 +1,4 @@
-import { List } from '../components/moves/containers/List';
+import { List } from '../domains/moves/containers/List';
 
 export function Moves() {
 	return (
