@@ -6,8 +6,8 @@ export function Header() {
 	return (
 		<header>
 			<nav>
-				<a href="/" class={url == '/' && 'active'}>
-					Home
+				<a href="/moves" class={url == '/' && 'active'}>
+					Moves
 				</a>
 				<a href="/404" class={url == '/404' && 'active'}>
 					404
