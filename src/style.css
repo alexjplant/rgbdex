@@ -22,3 +22,13 @@ aside {
     padding-top: 60px;
     padding-bottom: 60px;
 }
+
+.badge {
+    background-color: lightblue;
+    color: black;
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 0 4px;
+    text-align: center;
+    border-radius: 5px;;
+}
