@@ -5,6 +5,7 @@ import { Header } from './domains/Header.js';
 import { NotFound } from './pages/_404.jsx';
 import './style.css';
 import { Moves } from './pages/Moves.js';
+import { Monsters } from './pages/Monsters.js';
 
 export function App() {
 	return (
@@ -13,6 +14,7 @@ export function App() {
 			<main>
 				<Router>
 					<Route path="/moves" component={Moves} />
+					<Route path="/monsters" component={Monsters} />
 					<Route default component={NotFound} />
 				</Router>
 			</main>

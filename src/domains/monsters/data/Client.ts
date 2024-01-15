@@ -1,8 +1,14 @@
 import { Monster } from "./Monster";
 
+export const GetAll = async (): Promise<Monster[]> => {
+    const list = await GetList();
+    const all = await GetMonsters(list);
+    return all;
+};
+
 export const GetList = async (): Promise<string[]> => {
     try {
-        const result = await fetch("https://github.com/Vortyne/pureRGB/blob/master/data/pokemon/base_stats.asm")
+        const result = await fetch("https://raw.githubusercontent.com/Vortyne/pureRGB/master/data/pokemon/base_stats.asm")
         // TODO use a stream or something to make this more efficient
         const lines = (await result.text()).split('\n');
         const mappedLines = lines.map(l => {
@@ -20,18 +26,19 @@ export const GetList = async (): Promise<string[]> => {
     }
 };
 
-const GetAll = async (monsterNames: string[]): Promise<Monster[]> => {
+export const GetMonsters = async (monsterNames: string[]): Promise<Monster[]> => {
     try {
         var monsters: Monster[] = []
 
-        monsterNames.forEach(async (monsterName) => {
+        await Promise.all(monsterNames.map(async (monsterName) => {
             const result = await fetch(`https://raw.githubusercontent.com/Vortyne/pureRGB/master/data/pokemon/base_stats/${monsterName}.asm`);
             const lines = (await result.text()).split('\n');
             // TODO use a stream or something to make this more efficient
+            const monster = {
+                name: monsterName,
+            } as Monster;
+
             lines.forEach(line => {
-
-                const monster = {} as Monster;
-
                 const pokedexIdMatch = line.match(/\s*db\s*DEX_(\w+)/);
                 if (pokedexIdMatch) {
                     monster.pokedexId = pokedexIdMatch[1 + 1];
@@ -45,10 +52,22 @@ const GetAll = async (monsterNames: string[]): Promise<Monster[]> => {
                     monster.baseSpeed = parseInt(statMatch[1 + 3]);
                     monster.baseSpecial = parseInt(statMatch[1 + 4]);
                 }
-                monsters.push(monster);
+
+                // db GRASS, POISON ; type
+                const typeMatch = line.match(/\s*db\s*(\w+),\s*(\w+)\s*;\s*type/); 
+                if (typeMatch) {
+                    monster.type1 = typeMatch[1 + 0];
+                    monster.type2 = typeMatch[1 + 1];
+                }
+                // db 255 ; catch rate
+                // db 84 ; base exp
+
             });
 
-        });
+            monsters.push(monster);
+            Promise.resolve();
+        }));
+
         return monsters;
     } catch (e) {
         console.log(e);
