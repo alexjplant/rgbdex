@@ -8,6 +8,7 @@ export function Header() {
 			<nav>
 				<a href="/moves" class={url == '/' && 'active'}>Moves</a>
 				<a href="/monsters" class={url == '/' && 'active'}>Monsters</a>
+				<a href="/types" class={url == '/' && 'active'}>Types</a>
 			</nav>
 		</header>
 	);
