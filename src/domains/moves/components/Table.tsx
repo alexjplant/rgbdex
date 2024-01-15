@@ -18,6 +18,16 @@ export const Table = (props: TableProps) => {
         }
     }, []);
 
+    const effects = new Set(props.moves.map((move) => move.effect));
+    const [filterEffect, setFilterEffect] = useState<string | undefined>(undefined);
+    const filterEffectOnInput = useCallback((event: JSX.TargetedEvent<HTMLSelectElement>) => {
+        if (event.currentTarget.value) {
+            setFilterEffect(event.currentTarget.value);
+        } else {
+            setFilterEffect(undefined);
+        }
+    }, []);
+
     const [filterName, setFilterName] = useState<string | undefined>(undefined);
     const filterNameOnInput = useCallback((event: JSX.TargetedEvent<HTMLInputElement>) => {
         if (event.currentTarget.value) {
@@ -72,27 +82,36 @@ export const Table = (props: TableProps) => {
 
     var filteredMoves = props.moves.filter(move => pinnedMoveNames.indexOf(move.name) === -1);
     // TODO dynamically build a filter function and iterate once
-    if (filterType) {
-        filteredMoves = filteredMoves.filter((move) => move.type === filterType);
-    }
     if (filterName) {
         filteredMoves = filteredMoves.filter((move) => move.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
             move.comment.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
     }
-    if (filterMinPP) {
-        filteredMoves = filteredMoves.filter((move) => move.pp >= filterMinPP);
+    if (filterEffect) {
+        filteredMoves = filteredMoves.filter((move) => move.effect === filterEffect);
+    }
+    if (filterType) {
+        filteredMoves = filteredMoves.filter((move) => move.type === filterType);
     }
     if (filterMinAccuracy) {
         filteredMoves = filteredMoves.filter((move) => move.accuracy >= filterMinAccuracy);
+    }
+    if (filterMinPP) {
+        filteredMoves = filteredMoves.filter((move) => move.pp >= filterMinPP);
     }
 
     return <table>
         <thead>
             <tr>
                 <td>
-                    <input type="text" onInput={filterNameOnInput} />
+                    <input type="search" onInput={filterNameOnInput} />
                 </td>
-                <td></td>
+                <td>
+                    <select type="select" onInput={filterEffectOnInput}>
+                        <option value="">ALL</option>
+                        {Array.from(effects).map((effect) => <option>{effect}</option>)}
+                    </select>
+
+                </td>
                 <td></td>
                 <td>
                     <select type="select" onInput={filterTypeOnInput}>
@@ -101,10 +120,10 @@ export const Table = (props: TableProps) => {
                     </select>
                 </td>
                 <td>
-                    <input type="text" onInput={filterMinAccuracyOnInput} />
+                    <input type="search" onInput={filterMinAccuracyOnInput} placeholder='Minimum Accuracy' />
                 </td>
                 <td>
-                    <input type="text" onInput={filterMinPPOnInput} />
+                    <input type="search" onInput={filterMinPPOnInput} placeholder='Minimum PP'/>
                 </td>
             </tr>
             <tr>
