@@ -19,8 +19,8 @@ export function App() {
 		<LocationProvider>
 			<header>
 				<nav>
-					<a href="/moves" class={url == '/' && 'active'}>Moves</a>
-					<a href="/monsters" class={url == '/' && 'active'}>Monsters</a>
+					<a href="/moves" class={url == '/' && 'active'}>Moves</a> &nbsp;
+					<a href="/monsters" class={url == '/' && 'active'}>Monsters</a> &nbsp; 
 					<a href="/types" class={url == '/' && 'active'}>Types</a>
 				</nav>
 			</header>
@@ -30,7 +30,7 @@ export function App() {
 					<Route path="/moves" component={Moves} />
 					<Route path="/monsters" component={Monsters} />
 					<Route path="/types" component={TypeMatchups} />
-					<Route default component={NotFound} />
+					<Route default component={Moves} />
 				</Router>
 			</main>
 			{state.ui.sidebar.value && (<aside style={{width: '300px'}}> 
