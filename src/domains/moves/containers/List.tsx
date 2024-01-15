@@ -1,18 +1,8 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useContext } from 'preact/hooks';
 import { Table } from '../components/Table';
-import { GetAll } from '../data/Client';
-import { Move } from '../data/Move';
+import { State } from '../../../state';
 
 export const List = () => {
-    const [moves, setMoves] = useState<Move[]>([]);
-    useEffect(() => {
-        const fetchData = async () => {
-            setMoves(await GetAll());
-        };
-
-        fetchData();
-
-        return () => {};
-    }, []);
-    return <Table moves={moves} />
+    const state = useContext(State);
+    return <Table moves={state.data.moves.value} />
 }

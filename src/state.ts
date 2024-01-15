@@ -12,7 +12,7 @@ export const createAppState = (): AppState => {
         data: {
             moves: signal([]),
             monsters: signal([]),
-            typesMatchups: signal([])
+            typeMatchups: signal([])
         }
 	};
 }
@@ -24,7 +24,7 @@ export interface AppState {
     data: {
         moves: Signal<Move[]>;
         monsters: Signal<Monster[]>;
-        typesMatchups: Signal<TypeMatchup[]>;
+        typeMatchups: Signal<TypeMatchup[]>;
     }
 }
 
