@@ -9,3 +9,9 @@ A front-end-only data exploration tool for [PureRGB](https://github.com/Vortyne/
  - Add Tailwind and style this ugly thing
  - Smart formatting for names (pretty print, incorporate comments for when things have been renamed)
  - Generate proper AST from asm source and ditch janky Regex parsing?  
+ - Flesh out data for monsters and types
+ - Add ability to populate your roster and indicate ideal type matchups
+ - ...then add ability to set movesets
+ - Cache downloaded data in LocalStorage
+ - Filters, sorts, etc. in route
+ - Allow change of branch from Github for source data
