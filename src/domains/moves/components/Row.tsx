@@ -1,5 +1,6 @@
 export interface RowProps {
     name: string;
+    displayName: string;
     effect: string;
     type: string;
     power: number;
@@ -12,7 +13,7 @@ export interface RowProps {
 
 export const Row = (props: RowProps) => (
     <tr>
-        <td>{props.name}</td>
+        <td>{props.displayName}</td>
         <td>{props.effect}</td>
         <td>{props.power}</td>
         <td>{props.type}</td>

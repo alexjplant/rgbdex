@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 import { Move } from "../data/Move";
-import { Row, RowProps } from "./Row";
+import { Row } from "./Row";
 import { JSX } from "preact";
 
 export interface TableProps {
@@ -83,8 +83,7 @@ export const Table = (props: TableProps) => {
     var filteredMoves = props.moves.filter(move => pinnedMoveNames.indexOf(move.name) === -1);
     // TODO dynamically build a filter function and iterate once
     if (filterName) {
-        filteredMoves = filteredMoves.filter((move) => move.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
-            move.comment.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
+        filteredMoves = filteredMoves.filter((move) => move.displayName.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
     }
     if (filterEffect) {
         filteredMoves = filteredMoves.filter((move) => move.effect === filterEffect);

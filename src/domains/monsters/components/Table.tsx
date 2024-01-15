@@ -1,14 +1,16 @@
-import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
+import { useCallback, useContext, useEffect, useMemo, useState } from "preact/hooks";
 import { Monster } from "../data/Monster";
 import { Row, RowProps } from "./Row";
 import { JSX } from "preact";
+import { State } from "../../../state";
 
 export interface TableProps {
-    monsters: Monster[];
 }
 
 export const Table = (props: TableProps) => {
-    const types = new Set(props.monsters.map((monsters) => monsters.type1));
+    const state = useContext(State);
+    const monsters = state.data.monsters.value; 
+    const types = new Set(monsters.map((monsters) => monsters.type1));
     // TODO check secondary type just in case...
     const [filterType, setFilterType] = useState<string | undefined>(undefined);
     const filterTypeOnInput = useCallback((event: JSX.TargetedEvent<HTMLSelectElement>) => {
@@ -30,14 +32,14 @@ export const Table = (props: TableProps) => {
 
     const [pinnedMonsters, setPinnedMonsters] = useState<Monster[]>([]);
     const pinnedMonsterNames = useMemo(() => pinnedMonsters.map((move) => move.name), [pinnedMonsters]);
-    const pinMonster = useCallback((name: string) => {
-        const move = props.monsters.find((monster) => monster.name === name);
+    const pinMonster = useCallback((monster: Monster) => {
+        const move = monsters.find((currentMonster) => currentMonster.name === monster.name);
         setPinnedMonsters([...pinnedMonsters, move]);
-    }, [pinnedMonsters, props.monsters]);
-    const unpinMonster = useCallback((name: string) => {
-        const move = props.monsters.find((monster) => monster.name === name);
-        setPinnedMonsters(pinnedMonsters.filter((monster) => monster.name !== name));
-    }, [pinnedMonsters, props.monsters]);
+    }, [pinnedMonsters, monsters]);
+    const unpinMonster = useCallback((monster: Monster) => {
+        const move = monsters.find((currentMonster) => currentMonster.name === monster.name);
+        setPinnedMonsters(pinnedMonsters.filter((currentMonster) => currentMonster.name !== monster.name));
+    }, [pinnedMonsters, monsters]);
 
 
     enum SortColumn {
@@ -48,7 +50,7 @@ export const Table = (props: TableProps) => {
     const [filterSort, setFilterSort] = useState<SortColumn>(SortColumn.Name);
     const [filterSortDirection, setFilterSortDirection] = useState<boolean>(true);
 
-    var filteredMonsters = props.monsters.filter(monster => pinnedMonsterNames.indexOf(monster.name) === -1);
+    var filteredMonsters = monsters.filter(monster => pinnedMonsterNames.indexOf(monster.name) === -1);
     // TODO dynamically build a filter function and iterate once
     if (filterName) {
         filteredMonsters = filteredMonsters.filter((monster) => monster.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
@@ -80,10 +82,10 @@ export const Table = (props: TableProps) => {
             </tr>
         </thead>
         <tbody>
-            {pinnedMonsters.map((monster) => <Row key={monster.name} {...monster} pinCallback={unpinMonster} pinButtonText="Unpin" />)}
+            {pinnedMonsters.map((monster) => <Row key={monster.name} monster={monster} pinCallback={unpinMonster} pinButtonText="Unpin" />)}
         </tbody>
         <tbody>
-            {filteredMonsters.map((monster) => <Row key={monster.name} {...monster} pinCallback={pinMonster} pinButtonText="Pin" />)}
+            {filteredMonsters.map((monster) => <Row key={monster.name} monster={monster} pinCallback={pinMonster} pinButtonText="Pin" />)}
         </tbody>
     </table>
 }
