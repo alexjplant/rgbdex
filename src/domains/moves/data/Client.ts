@@ -1,12 +1,12 @@
 import { Move } from "./Move";
 
-export const GetMoves = async () => {
+export const GetAll = async () => {
     try {
         const result = await fetch("https://raw.githubusercontent.com/Vortyne/pureRGB/master/data/moves/moves.asm");
         // TODO use a stream or something to make this more efficient
         const lines = (await result.text()).split('\n');
         const mappedLines = lines.map(l => {
-            const match = l.match(/s*move\s*(\w+),\s*(\w+),\s*(\d+),\s*(\w+),\s*(\d+),\s*(\d+)\s*(.*)/)
+            const match = l.match(/\s*move\s*(\w+),\s*(\w+),\s*(\d+),\s*(\w+),\s*(\d+),\s*(\d+)\s*(.*)/)
             if (match === null) {
                 return null;
             }
