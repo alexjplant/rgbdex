@@ -10,13 +10,41 @@ export interface TableProps {
 export const Table = (props: TableProps) => {
     const types = new Set(props.moves.map((move) => move.type));
     const [filterType, setFilterType] = useState<string | undefined>(undefined);
-    const filterTypeOnChange = useCallback((event: JSX.TargetedEvent<HTMLSelectElement>) => {
-        if(event.currentTarget.value) {
+    const filterTypeOnInput = useCallback((event: JSX.TargetedEvent<HTMLSelectElement>) => {
+        if (event.currentTarget.value) {
             setFilterType(event.currentTarget.value);
         } else {
             setFilterType(undefined);
         }
     }, []);
+
+    const [filterName, setFilterName] = useState<string | undefined>(undefined);
+    const filterNameOnInput = useCallback((event: JSX.TargetedEvent<HTMLInputElement>) => {
+        if (event.currentTarget.value) {
+            setFilterName(event.currentTarget.value);
+        } else {
+            setFilterName(undefined);
+        }
+    }, []);
+
+    const [filterMinPP, setFilterMinPP] = useState<number | undefined>(undefined);
+    const filterMinPPOnInput = useCallback((event: JSX.TargetedEvent<HTMLInputElement>) => {
+        if (event.currentTarget.value) {
+            setFilterMinPP(parseInt(event.currentTarget.value));
+        } else {
+            setFilterMinPP(undefined);
+        }
+    }, []);
+
+    const [filterMinAccuracy, setFilterMinAccuracy] = useState<number | undefined>(undefined);
+    const filterMinAccuracyOnInput = useCallback((event: JSX.TargetedEvent<HTMLInputElement>) => {
+        if (event.currentTarget.value) {
+            setFilterMinAccuracy(parseInt(event.currentTarget.value));
+        } else {
+            setFilterMinAccuracy(undefined);
+        }
+    }, []);
+
 
     const [pinnedMoves, setPinnedMoves] = useState<Move[]>([]);
     const pinnedMoveNames = useMemo(() => pinnedMoves.map((move) => move.name), [pinnedMoves]);
@@ -43,25 +71,57 @@ export const Table = (props: TableProps) => {
     const [filterSortDirection, setFilterSortDirection] = useState<boolean>(true);
 
     var filteredMoves = props.moves.filter(move => pinnedMoveNames.indexOf(move.name) === -1);
+    // TODO dynamically build a filter function and iterate once
     if (filterType) {
         filteredMoves = filteredMoves.filter((move) => move.type === filterType);
+    }
+    if (filterName) {
+        filteredMoves = filteredMoves.filter((move) => move.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
+            move.comment.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
+    }
+    if (filterMinPP) {
+        filteredMoves = filteredMoves.filter((move) => move.pp >= filterMinPP);
+    }
+    if (filterMinAccuracy) {
+        filteredMoves = filteredMoves.filter((move) => move.accuracy >= filterMinAccuracy);
     }
 
     return <table>
         <thead>
             <tr>
-                <td>Name</td>
-                <td>Effect</td>
-                <td>Power</td>
                 <td>
-                    Type
-                    <select type="select" onChange={filterTypeOnChange}>
+                    <input type="text" onInput={filterNameOnInput} />
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                    <select type="select" onInput={filterTypeOnInput}>
                         <option value="">ALL</option>
                         {Array.from(types).map((type) => <option>{type}</option>)}
                     </select>
                 </td>
-                <td>Accuracy</td>
-                <td>PP</td>
+                <td>
+                    <input type="text" onInput={filterMinAccuracyOnInput} />
+                </td>
+                <td>
+                    <input type="text" onInput={filterMinPPOnInput} />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Name
+                </td>
+                <td>Effect</td>
+                <td>Power</td>
+                <td>
+                    Type
+                </td>
+                <td>
+                    Accuracy
+                </td>
+                <td>
+                    PP
+                </td>
                 <td>Comment</td>
             </tr>
         </thead>
