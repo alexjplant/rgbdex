@@ -75,6 +75,8 @@ export const Table = (props: TableProps) => {
                 <td>Name</td>
                 <td>Type 1</td>
                 <td>Type 2</td>
+                <td></td>
+                <td></td>
             </tr>
         </thead>
         <tbody>
