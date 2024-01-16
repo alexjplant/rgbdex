@@ -23,20 +23,20 @@ export const GetTypeMatchupMultiplier = (typeMatchup: TypeMatchup) => {
 
 export const ComputeTypeMatchups = (typeMatchups: TypeMatchup[], monster: Monster) => {
     const defendingMatchups = typeMatchups.filter((typeMatchup) => typeMatchup.defendingType === monster.type1);
-    const attackingMatchups = typeMatchups.filter((typeMatchup) => typeMatchup.attackingType == monster.type1);
+    const stabMatchups = typeMatchups.filter((typeMatchup) => typeMatchup.attackingType == monster.type1);
     if (monster.type1 !== monster.type2) {
         defendingMatchups.push(...typeMatchups.filter(typeMatchup => typeMatchup.defendingType == monster.type2));
-        attackingMatchups.push(...typeMatchups.filter(typeMatchup => typeMatchup.attackingType == monster.type2));
+        stabMatchups.push(...typeMatchups.filter(typeMatchup => typeMatchup.attackingType == monster.type2));
     }
 
-    const computedAttackingMatchups = new Map<string, number>();
+    const computedStabMatchups = new Map<string, number>();
     const computedDefendingMatchups = new Map<string, number>();
-    for(const matchup of attackingMatchups) {
+    for(const matchup of stabMatchups) {
         const computedEffectiveness = GetTypeMatchupMultiplier(matchup);
-        if (computedAttackingMatchups.has(matchup.defendingType)) {
-            computedAttackingMatchups.set(matchup.defendingType, computedAttackingMatchups.get(matchup.defendingType) * computedEffectiveness);
+        if (computedStabMatchups.has(matchup.defendingType)) {
+            computedStabMatchups.set(matchup.defendingType, computedStabMatchups.get(matchup.defendingType) * computedEffectiveness);
         } else {
-            computedAttackingMatchups.set(matchup.defendingType, computedEffectiveness);
+            computedStabMatchups.set(matchup.defendingType, computedEffectiveness * 1.5);
         }
     }
     for(const matchup of defendingMatchups) {
@@ -48,11 +48,11 @@ export const ComputeTypeMatchups = (typeMatchups: TypeMatchup[], monster: Monste
         }
     }
 
-    const formattedAttackingMatchups: string[] = [];
+    const formattedStabMatchups: string[] = [];
     const formattedDefendingMatchups: string[] = [];
-    computedAttackingMatchups.forEach((effectiveness, type) => {
+    computedStabMatchups.forEach((effectiveness, type) => {
         if (effectiveness !== 1) {
-            formattedAttackingMatchups.push(`${effectiveness}x vs. ${type}`);
+            formattedStabMatchups.push(`${effectiveness}x vs. ${type}`);
         }
     });
     computedDefendingMatchups.forEach((effectiveness, type) => {
@@ -61,7 +61,7 @@ export const ComputeTypeMatchups = (typeMatchups: TypeMatchup[], monster: Monste
         }
     });
     return {
-        attackingMatchups: formattedAttackingMatchups,
+        stabMatchups : formattedStabMatchups,
         defendingMatchups: formattedDefendingMatchups
     };
 };

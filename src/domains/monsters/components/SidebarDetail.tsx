@@ -9,7 +9,7 @@ export interface SidebarDetailProps {
 
 export const SidebarDetail = (props: SidebarDetailProps) => {
     const state = useContext(State);
-    const {attackingMatchups, defendingMatchups} = ComputeTypeMatchups(state.data.typeMatchups.value, props.monster);
+    const {stabMatchups, defendingMatchups} = ComputeTypeMatchups(state.data.typeMatchups.value, props.monster);
 
     return <div>
         <span style={{fontWeight: 'bold'}}>{props.monster.name}</span><br />
@@ -22,7 +22,7 @@ export const SidebarDetail = (props: SidebarDetailProps) => {
         Speed: {props.monster.baseSpeed}<br />
         Special: {props.monster.baseSpecial}<br />
         Growth Rate: {props.monster.growthRate}<br />
-        Attacking Matchups: {attackingMatchups.map(matchup => <span class='badge'>{matchup}</span>)}<br />
+        STAB Matchups: {stabMatchups.map(matchup => <span class='badge'>{matchup}</span>)}<br />
         Defending Matchups: {defendingMatchups.map(matchup => <span class='badge'>{matchup}</span>)}<br />
     </div>;
 };
