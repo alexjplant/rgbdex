@@ -5,6 +5,7 @@
 A research and data exploration tool for players of [PureRGB](https://github.com/Vortyne/pureRGB), a Pokemon Gen 1 hack. This tool compiles monster, move, type, and other data from source and makes it searchable in an effort to help you on your play-throughs. **This is a serious work in progress (insofar as it's very quick and dirty)** - see the below list of TODOs.
 
 ## TODO
+ - Do STAB calculations and type matchup calculations more correctly then display moves in descending order of statistical EV damage (filtering by pinned moves if present)
  - Linting, tests, etc.
  - Handle data fetching more intelligently. CORS prevents pulling `zipblob` - investigate `git clone` in browser via library?
  - Add Tailwind and style this ugly thing
