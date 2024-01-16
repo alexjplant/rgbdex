@@ -9,6 +9,8 @@ export interface Monster {
     baseSpeed: number;
     baseSpecial: number;
     growthRate: string;
+    baseLearnset: string[];
+    tmHmLearnset: string[];
     // TODO base learnset
     // TODO TM/HM learnset
 }

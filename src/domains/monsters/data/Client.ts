@@ -36,6 +36,8 @@ export const GetMonsters = async (monsterNames: string[]): Promise<Monster[]> =>
             // TODO use a stream or something to make this more efficient
             const monster = {
                 name: monsterName,
+                baseLearnset: [],
+                tmHmLearnset: []
             } as Monster;
 
             lines.forEach(line => {
@@ -59,9 +61,28 @@ export const GetMonsters = async (monsterNames: string[]): Promise<Monster[]> =>
                     monster.type1 = typeMatch[1 + 0];
                     monster.type2 = typeMatch[1 + 1];
                 }
+            
+                // TODO
                 // db 255 ; catch rate
+
+                // TODO
                 // db 84 ; base exp
 
+                // db BITE, ROAR, NO_MOVE, NO_MOVE ; level 1 learnset
+                const baseLearnsetMatch = line.match(/\s*db\s*(\w+),\s*(\w+),\s*(\w+),\s*(\w+)\s*;\s*level 1 learnset/); 
+                if (baseLearnsetMatch) {
+                    for (const move of baseLearnsetMatch.slice(1)) {
+                        if (move !== "NO_MOVE") {
+                            monster.baseLearnset.push(move);
+                        }
+                    }
+                }
+	            
+                // db GROWTH_MEDIUM_SLOW ; growth rate
+                const growthRateMatch = line.match(/\s*db\s*(\w+)\s*;\s*growth rate/); 
+                if (growthRateMatch) {
+                    monster.growthRate = growthRateMatch[1 + 0];
+                }
             });
 
             monsters.push(monster);

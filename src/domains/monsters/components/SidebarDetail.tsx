@@ -24,5 +24,7 @@ export const SidebarDetail = (props: SidebarDetailProps) => {
         Growth Rate: {props.monster.growthRate}<br />
         STAB Matchups: {stabMatchups.map(matchup => <span class='badge'>{matchup}</span>)}<br />
         Defending Matchups: {defendingMatchups.map(matchup => <span class='badge'>{matchup}</span>)}<br />
+        Base Learnset: {props.monster.baseLearnset.map(move => <span class='badge'>{move}</span>)}<br />
+        TM/HM Learnset: {props.monster.tmHmLearnset.map(move => <span class='badge'>{move}</span>)}<br />
     </div>;
 };
