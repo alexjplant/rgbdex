@@ -5,7 +5,7 @@ export const GetAll = async () => {
         const namesResult = await fetch("https://raw.githubusercontent.com/Vortyne/pureRGB/master/data/moves/names.asm");
         var lines = (await namesResult.text()).split('\n');
         const mappedNameLines = lines.map(l => {
-            const match = l.match(/\s*li\s*"([A-Z ]+)"/);
+            const match = l.match(/\s*li\s*"([\w -]+)"/);
             if (match === null) {
                 return null;
             }
